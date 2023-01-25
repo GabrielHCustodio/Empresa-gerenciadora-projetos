@@ -10,7 +10,7 @@ const Select = ({ text, name, options, handleOnChange, value }) => {
         onChange={handleOnChange}
         value={value || ""}
       >
-        <option disabled>
+        <option selected>
           Selecione uma opção
         </option>
         {options.map((option) => (

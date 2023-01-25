@@ -1,0 +1,9 @@
+.projectContainer {
+    padding: 20px;
+    width: 100%;
+}
+
+.titleContainer {
+    display: flex;
+    justify-content: space-between;
+}
