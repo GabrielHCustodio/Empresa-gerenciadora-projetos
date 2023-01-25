@@ -1,22 +1,11 @@
 {
   "projects": [
     {
-      "name": "Pagina de vendas",
-      "budget": "5000",
+      "name": "UI, UX E-commerce",
+      "budget": "20000",
       "category": {
-        "id": "2",
-        "name": "Desenvolvimento"
-      },
-      "cost": 0,
-      "services": [],
-      "id": 1
-    },
-    {
-      "name": "E-commerce",
-      "budget": "100000",
-      "category": {
-        "id": "2",
-        "name": "Desenvolvimento"
+        "id": "3",
+        "name": "Design"
       },
       "cost": 0,
       "services": [],
@@ -24,14 +13,25 @@
     },
     {
       "category": {
-        "id": "3",
-        "name": "Design"
+        "id": "2",
+        "name": "Desenvolvimento"
       },
-      "name": "Nova tela de login",
-      "budget": "12500",
+      "name": "Tela de login",
+      "budget": "4500",
       "cost": 0,
       "services": [],
       "id": 3
+    },
+    {
+      "name": "Projeto atualizado",
+      "budget": "15000",
+      "category": {
+        "id": "4",
+        "name": "Planejamento"
+      },
+      "cost": 0,
+      "services": [],
+      "id": 6
     }
   ],
   "categories": [
