@@ -1,10 +1,13 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 
+import { parse, v4 as uuidv4 } from "uuid";
+
 import Container from "../layout/Container";
 import Loading from "../layout/Loading";
 import Message from "../layout/Message";
 import ProjectForm from "../project/ProjectForm";
+import ServiceForm from "../service/ServiceForm";
 
 import styles from "./Project.module.css";
 
@@ -13,6 +16,7 @@ const Project = () => {
 
   const [project, setProject] = useState([]);
   const [showProjectForm, setShowProjectForm] = useState(false);
+  const [showServiceForm, setShowServiceForm] = useState(false);
   const [message, setMessage] = useState("");
   const [type, setType] = useState("");
 
@@ -35,10 +39,12 @@ const Project = () => {
   }, [id]);
 
   const editPost = (project) => {
+    setMessage("");
+
     if (project.budget < project.cost) {
-      setMessage("Valor gasto não pode ser maior que o orçamento!");
+      setMessage("Orçamento não pode ser menor que o custo do projeto!");
       setType("error");
-      return false
+      return false;
     }
 
     fetch(`http://localhost:5000/projects/${project.id}`, {
@@ -60,8 +66,50 @@ const Project = () => {
       });
   };
 
+  const createService = (project) => {
+
+    setMessage('')
+
+    const lastService = project.services[project.services.length - 1];
+
+    lastService.id = uuidv4();
+
+    const lastServiceCost = lastService.cost;
+    
+    const newCost = parseFloat(project.cost) + parseFloat(lastServiceCost);
+
+    if (newCost > project.budget) {
+      setMessage("Orçamento ultrapassado, verifique o valor do serviço");
+      setType("error");
+      project.services.pop();
+      setShowServiceForm(false)
+      return false;
+    }
+
+    project.cost = newCost;
+
+    fetch(`http://localhost:5000/projects/${project.id}`, {
+      method: "PATCH",
+      header: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(project),
+    })
+      .then(resp => resp.json())
+      .then(() => {
+        setMessage("Serviço adicionado com sucesso!");
+        setType("success");
+        setShowServiceForm(false)
+      })
+      .catch((err) => console.log(err));
+  };
+
   const toggleProjectForm = () => {
     setShowProjectForm(!showProjectForm);
+  };
+
+  const toggleServiceForm = () => {
+    setShowServiceForm(!showServiceForm);
   };
 
   return (
@@ -97,6 +145,25 @@ const Project = () => {
                 </div>
               )}
             </div>
+            <div className={styles.serviceFormContainer}>
+              <h2>Adicione um serviço</h2>
+              <button className={styles.btn} onClick={toggleServiceForm}>
+                {!showServiceForm ? "Adicionar serviço" : "Fechar"}
+              </button>
+              <div className={styles.projectInfo}>
+                {showServiceForm && (
+                  <ServiceForm
+                    handleSubmit={createService}
+                    btnText="Adicionar serviço"
+                    projectData={project}
+                  />
+                )}
+              </div>
+            </div>
+            <h2>Serviços</h2>
+            <Container customClass="start">
+              <p>Itens de serviços</p>
+            </Container>
           </Container>
         </div>
       ) : (

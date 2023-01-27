@@ -23,7 +23,7 @@
 .serviceFormContainer {
     border-bottom: 1px solid #7a7a7a;
     margin-bottom: 20px;
-    padding-bottom: 20px;
+    padding: 20px 0;
     display: flex;
     justify-content: space-between;
     align-items: center;
